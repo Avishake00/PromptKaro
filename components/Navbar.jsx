@@ -2,10 +2,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { signOut, getProviders, signIn } from "next-auth/react";
+import { signOut, getProviders, signIn, useSession } from "next-auth/react";
 
 const Navbar = () => {
-	const isUserLogin = true;
+    const {data:session}=useSession();
 	const [providers, setProviders] = useState(null);
 	const [toggleDropdown, settoggleDropdown] = useState(false);
 	useEffect(() => {
@@ -16,7 +16,6 @@ const Navbar = () => {
 
 		fetchProviders();
 	}, []);
-
 	return (
 		<nav className="flex-between w-full mb-8 md:mb-16 pt-3">
 			<Link href={"/"} className="flex gap-2 flex-center">
@@ -32,23 +31,26 @@ const Navbar = () => {
 
 			{/* for desktop application */}
 			<div className="hidden sm:flex gap-3 md:gap-5">
-				{isUserLogin ? (
+				{session?.user  ? (
 					<>
-						<Link href={"/create-prompt"} className="black_btn">
+						<Link href={"/createPost"} className="black_btn">
 							Create Post
 						</Link>
 						<button type="button" className="outline_btn" onClick={signOut}>
 							Sign Out
 						</button>
 						<Link href={"/profile"}>
-							<Image
-								src="/images/logo.svg"
-								alt="Profile Logo"
-								width={37}
-								height={37}
-								className="object-contain"
-							/>
-						</Link>
+  <div className="rounded-full overflow-hidden ">
+    <Image
+      src={session?.user?.image}
+      alt="Profile Logo"
+      width={37}
+      height={37}
+      className="object-cover w-full h-full"
+    />
+  </div>
+</Link>
+
 					</>
 				) : (
 					<>
@@ -69,18 +71,21 @@ const Navbar = () => {
 
 			{/* for mobile application */}
 			<div className="flex sm:hidden relative">
-				{isUserLogin ? (
+            {session?.user ? (
 					<>
+                    <div className="rounded-full overflow-hidden">
+
 						<Image
-							src="/images/logo.svg"
+							src={session.user.image}
 							alt="Profile Logo"
 							width={37}
 							height={37}
 							className="object-contain cursor-pointer"
 							onClick={() => {
-								settoggleDropdown((prev) => !prev);
+                                settoggleDropdown((prev) => !prev);
 							}}
-						/>
+                            />
+                     </div>
 
 						{toggleDropdown && (
 							<div className="dropdown">
@@ -92,7 +97,7 @@ const Navbar = () => {
 									My Profile
 								</Link>
 								<Link
-									href={"/create-prompt"}
+									href={"/createPost"}
 									className="dropdown_link"
 									onClick={() => settoggleDropdown(false)}
 								>
