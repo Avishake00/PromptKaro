@@ -3,9 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { signOut, getProviders, signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-    const {data:session}=useSession();
+	const router=useRouter();
+	const { data: session } = useSession();
 	const [providers, setProviders] = useState(null);
 	const [toggleDropdown, settoggleDropdown] = useState(false);
 	useEffect(() => {
@@ -31,26 +33,25 @@ const Navbar = () => {
 
 			{/* for desktop application */}
 			<div className="hidden sm:flex gap-3 md:gap-5">
-				{session?.user  ? (
+				{session?.user ? (
 					<>
 						<Link href={"/createPost"} className="black_btn">
 							Create Post
 						</Link>
-						<button type="button" className="outline_btn" onClick={signOut}>
+						<button type="button" className="outline_btn" onClick={()=>{signOut(),router.push('/')}}>
 							Sign Out
 						</button>
 						<Link href={"/profile"}>
-  <div className="rounded-full overflow-hidden ">
-    <Image
-      src={session?.user?.image}
-      alt="Profile Logo"
-      width={37}
-      height={37}
-      className="object-cover w-full h-full"
-    />
-  </div>
-</Link>
-
+							<div className="rounded-full overflow-hidden ">
+								<Image
+									src={session?.user?.image}
+									alt="Profile Logo"
+									width={37}
+									height={37}
+									className="object-cover w-full h-full"
+								/>
+							</div>
+						</Link>
 					</>
 				) : (
 					<>
@@ -71,21 +72,20 @@ const Navbar = () => {
 
 			{/* for mobile application */}
 			<div className="flex sm:hidden relative">
-            {session?.user ? (
+				{session?.user ? (
 					<>
-                    <div className="rounded-full overflow-hidden">
-
-						<Image
-							src={session.user.image}
-							alt="Profile Logo"
-							width={37}
-							height={37}
-							className="object-contain cursor-pointer"
-							onClick={() => {
-                                settoggleDropdown((prev) => !prev);
-							}}
-                            />
-                     </div>
+						<div className="rounded-full overflow-hidden">
+							<Image
+								src={session.user.image}
+								alt="Profile Logo"
+								width={37}
+								height={37}
+								className="object-contain cursor-pointer"
+								onClick={() => {
+									settoggleDropdown((prev) => !prev);
+								}}
+							/>
+						</div>
 
 						{toggleDropdown && (
 							<div className="dropdown">
@@ -109,6 +109,7 @@ const Navbar = () => {
 									onClick={() => {
 										settoggleDropdown(false);
 										signOut();
+										router.push('/')
 									}}
 								>
 									Sign Out

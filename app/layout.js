@@ -2,6 +2,7 @@
 import '@styles/globals.css'
 import Navbar from "@components/Navbar";
 import Provider from "@components/Provider";
+import { Toaster } from 'react-hot-toast';
 
 
 export const metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
           <div className="gradient"/>
         </div>
         <main className="app">
+          <Toaster/>
           <Navbar/>
         {children}
         </main>
