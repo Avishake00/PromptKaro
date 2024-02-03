@@ -1,5 +1,7 @@
 import Link from "next/link";
 import React from "react";
+import TextEditor from "./TextEditor";
+
 
 const Form = ({ type, Post, setPost, submitting, handleSubmit }) => {
 	return (
@@ -13,19 +15,16 @@ const Form = ({ type, Post, setPost, submitting, handleSubmit }) => {
 			</p>
 
 			<form
-				className="mt-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism"
+				className="mt-10 w-full max-w-2xl flex flex-col gap-20 glassmorphism"
 				onSubmit={handleSubmit}
 			>
 				<label>
-					<span className="font-satoshi font-semibold text-base text-gray-700">
+					<span className="font-satoshi font-semibold text-base text-gray-700 ">
 						Your AI Prompt
 					</span>
-					<textarea
-						value={Post.prompt}
-						onChange={(e) => setPost({ ...Post, prompt: e.target.value })}
-						required
-						className="form_textarea"
-						placeholder="Write your prompt here..."
+					<TextEditor
+					Value={Post.prompt}
+					handleOnchange={(value) => setPost({ ...Post, prompt: value })}
 					/>
 				</label>
 

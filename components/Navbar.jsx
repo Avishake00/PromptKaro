@@ -33,7 +33,7 @@ const Navbar = () => {
 
 			{/* for desktop application */}
 			<div className="hidden sm:flex gap-3 md:gap-5">
-				{session?.user ? (
+				{session?.user && (
 					<>
 						<Link href={"/createPost"} className="black_btn">
 							Create Post
@@ -53,7 +53,9 @@ const Navbar = () => {
 							</div>
 						</Link>
 					</>
-				) : (
+				) }
+				
+				 {!session?.user &&(
 					<>
 						{providers &&
 							Object.values(providers).map((provider) => (
