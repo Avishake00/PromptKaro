@@ -1,6 +1,45 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+
+# PromptKaro
+
+PromptKaro is a web application that allows users to create, share, and explore prompts. It provides a collaborative platform for creative expression and storytelling.
+
+## Features
+
+- **Prompt Management:**
+  - Create, edit, and delete your prompts.
+  - Explore a collection of prompts shared by other users.
+
+- **Search Functionality:**
+  - Search prompts using tags, usernames, and email addresses.
+
+- **Authentication:**
+  - Securely log in and log out with Google OAuth.
+
+## Tech Stack
+
+- **Frontend:**
+  - React.js
+  - Next.js
+  - react-quill
+  - next-auth
+  - react-query
+
+- **Backend:**
+  - Node.js
+  - Express.js
+  - MongoDB (or your preferred database)
+  - mongoose
+  - next-auth
+
 ## Getting Started
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Avishake00/PromptKaro.git
+   cd PromptKaro
+
 
 First, run the development server:
 
