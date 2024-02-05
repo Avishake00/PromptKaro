@@ -3,7 +3,8 @@ import Form from '@components/Form';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
+
 
 const EditPrompt = () => {
   const { data: session } = useSession();
@@ -56,7 +57,8 @@ const EditPrompt = () => {
   };
 
   return (
-    <div>
+
+    <Suspense>
       <Form
         type="Edit"
         Post={Post}
@@ -64,7 +66,7 @@ const EditPrompt = () => {
         submitting={submitting}
         handleSubmit={edit_prompt}
       />
-    </div>
+    </Suspense>
   );
 };
 
