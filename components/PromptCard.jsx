@@ -23,89 +23,82 @@ const Test = ({ data }) => {
   );
 };
 
-
 const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
-	const [copied, setCopied] = useState("");
-	const pathname = usePathname();
-	const router = useRouter();
-	const { data: session } = useSession();
+    const [copied, setCopied] = useState("");
+    const pathname = usePathname();
+    const router = useRouter();
+    const { data: session } = useSession();
 
-	const handleCopy = () => {
-		setCopied(post.prompt);
-		navigator.clipboard.writeText(post.prompt);
-		toast.success("Copied to Clipboard");
-		setTimeout(() => setCopied(""), 3000);
-		
-	};
+    const handleCopy = () => {
+        setCopied(post.prompt);
+        navigator.clipboard.writeText(post.prompt);
+        toast.success("Copied to Clipboard");
+        setTimeout(() => setCopied(""), 3000);
+    };
 
-	console.log(post.prompt);
-	const handleImageOnclick=()=>{
-		console.log(post);
-		console.log(session?.user.id);
+    const handleImageOnclick = () => {
+        if (session?.user.id === post.creator._id) return router.push('/profile');
+        router.push(`/profile/${post.creator._id}?name=${post.creator.username}`);
+    };
 
-		if(session?.user.id == post.creator._id) return router.push('/profile');
+    return (
+        <div className="prompt_card">
+            <div className="flex justify-between items-start gap-1">
+                <div className="flex-1 flex justify-start items-center gap-3 cursor-pointer">
+                    <Image
+                        onClick={handleImageOnclick}
+                        src={post?.creator?.image}
+                        alt="User Image"
+                        width={40}
+                        height={40}
+                        className="rounded-full object-contain"
+                    />
+                    <div className="flex flex-col">
+                        <h3 className="font-satoshi font-semibold text-gray-900 overflow-hidden">
+                            {post?.creator?.username}
+                        </h3>
+                        <p className="font-inter text-sm text-gray-500 overflow-hidden">
+                            {post?.creator?.email}
+                        </p>
+                    </div>
+                </div>
 
-		router.push(`/profile/${post.creator._id}?name=${post.creator.username}`)
-	}
+                {session?.user.id === post.creator._id && pathname === "/profile" && (
+                    <>
+                        <div className="flex gap-2 mt-1.5">
+                            <button onClick={handleEdit}>
+                                <FaRegEdit size={16} className="text-blue-500" />
+                            </button>
+                            <button onClick={handleDelete}>
+                                <MdOutlineDeleteOutline size={16} className="text-teal-500" />
+                            </button>
+                        </div>
+                    </>
+                )}
 
-	return (
-		<div className="prompt_card">
-			<div className="flex justify-between items-start gap-1">
-				<div className="flex-1 flex justify-start items-center gap-3 cursor-pointer">
-					<Image
-					onClick={handleImageOnclick}
-						src={post?.creator?.image}
-						alt="User Image"
-						width={40}
-						height={40}
-						className="rounded-full object-contain"
-					/>
-					<div className="flex flex-col">
-						<h3 className="font-satoshi font-semibold text-gray-900 overflow-hidden">
-							{post?.creator?.username}
-						</h3>
-						<p className="font-inter text-sm text-gray-500 overflow-hidden">
-							{post?.creator?.email}
-						</p>
-					</div>
-				</div>
+                <div className="copy_btn" onClick={handleCopy}>
+                    <Image
+                        src={copied === post.prompt ? "/icons/tick.svg" : "/icons/copy.svg"}
+                        alt="Copy button"
+                        width={12}
+                        height={12}
+                    />
+                </div>
+            </div>
 
-				{session?.user.id === post.creator._id && pathname === "/profile" && (
-					<>
-						<div className=" flex gap-2 mt-1.5">
-							<button onClick={handleEdit}>
-								<FaRegEdit size={16} className="text-blue-500" />
-							</button>
-							<button onClick={handleDelete}>
-								<MdOutlineDeleteOutline size={16} className="text-teal-500" />
-							</button>
-						</div>
-					</>
-				)}
+            <div className="my-4 font-satoshi text-sm text-gray-700 overflow-hidden">
+                <Test data={post.prompt} />
+            </div>
 
-				<div className="copy_btn" onClick={handleCopy}>
-					<Image
-						src={copied === post.prompt ? "/icons/tick.svg" : "/icons/copy.svg"}
-						alt="Copy button"
-						width={12}
-						height={12}
-					/>
-				</div>
-			</div>
-
-			<p className="my-4 font-satoshi text-sm text-gray-700 overflow-hidden">
-
-				<Test data={post.prompt}/>
-			</p>
-			<p
-				className="font-inter text-sm blue_gradient cursor-pointer"
-				onClick={() => handleTagClick && handleTagClick(post.tag)}
-			>
-				#{` `}
-				{post.tag}
-			</p>
-		</div>
-	);
+            <p
+                className="font-inter text-sm blue_gradient cursor-pointer"
+                onClick={() => handleTagClick && handleTagClick(post.tag)}
+            >
+                #{` `}
+                {post.tag}
+            </p>
+        </div>
+    );
 };
 
 export default PromptCard;
